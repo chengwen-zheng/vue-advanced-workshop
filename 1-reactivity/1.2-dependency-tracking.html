@@ -3,9 +3,25 @@
 // exposing it on window is necessary for testing
 window.Dep = class Dep {
   // Implement this!
+  constructor() {
+    this.subscribers = new Set();
+  }
+
+  notify() {
+    this.subscribers.forEach(subscriber => subscriber?.());
+  }
+
+  depend() {
+    if(activeUpdate) {
+      this.subscribers.add(activeUpdate);
+    }
+  }
 }
 
 function autorun (update) {
   // Implement this!
+  activeUpdate = update
+  update?.();
+  activeUpdate = null
 }
 </script>
