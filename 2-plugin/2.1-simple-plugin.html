@@ -3,6 +3,20 @@
 <script>
 const RulesPlugin = {
   // Implement this!
+  install(vue) {
+    Vue.mixin({
+      created() {
+        const rules = this.$options.rules;
+        Object.keys(rules || {}).forEach((ruleKey) => {
+          const rule = rules[ruleKey];
+          this.$watch(ruleKey, (newVal) => {
+            const valid = rule.validate(newVal);
+            !valid && console.log(rule.message)
+          })
+        })
+      }
+    })
+  }
 }
 
 Vue.use(RulesPlugin)
